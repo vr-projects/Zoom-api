@@ -1,6 +1,7 @@
 package com.userOnboard.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.userOnboard.model.User;
 
@@ -11,4 +12,6 @@ public interface UserDAO {
 	int saveUser(User user);
 	
 	User getById (int id) throws Exception;
+
+	List<User> getUsersByfilter(Map<String, Object> filters);
 }

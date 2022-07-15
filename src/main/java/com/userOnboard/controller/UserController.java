@@ -30,11 +30,6 @@ public class UserController {
 	@Autowired
 	private UserService userservice;
 	
-	/*
-	 * public UserController(UserService userservice) { super(); this.userservice =
-	 * userservice; }
-	 */
-
 	@GetMapping("/users/{limit}/{offset}")
 	@CrossOrigin(origins = "http://localhost:8081")
 	// @RequestMapping(value = "/users")
@@ -84,4 +79,20 @@ public class UserController {
 	 * 
 	 * }
 	 */
+	
+	@GetMapping("/getUsersByfilter")
+	public ResponseEntity<Object> getUsersByfilter() {
+		try {
+			Map<String, Object> filters = new  HashMap<String, Object>();
+			filters.put("first_name", "first_name");
+			filters.put("user_id",1);
+			Object result = userservice.getUsersByfilter(filters);
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("Users", result);
+		return ResponseHandler.generateResponse("Success","Successfully retrieved  data!", HttpStatus.OK, data);
+		}catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			return ResponseHandler.generateResponse("failure",e.getMessage(), HttpStatus.MULTI_STATUS, null);
+		}
+	}
 }

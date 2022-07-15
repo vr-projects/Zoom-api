@@ -1,6 +1,7 @@
 package com.userOnboard.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,11 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public int saveUser(User user) {
 		return userdao.saveUser(user);
+	}
+
+	@Override
+	public List<User> getUsersByfilter(Map<String, Object> filters) {
+		return userdao.getUsersByfilter(filters);
 	}
 
 }

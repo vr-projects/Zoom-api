@@ -3,10 +3,12 @@ package com.userOnboard.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import javax.swing.tree.RowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -124,5 +126,35 @@ public class UserDAOImpl implements UserDAO {
 			// TODO: handle exception
 		}
 	   return t;
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public List<User> getUsersByfilter(Map<String, Object> filters) {
+		
+		String sql = "SELECT * FROM t_user1 WHERE ";
+		boolean conditionAdded = false;
+		List<Object> args = new ArrayList<Object>();
+		/*
+		 * if (filters.containsKey("first_name")) { sql += " first_name = ? ";
+		 * args.add(filters.get("first_name")); conditionAdded = true; }
+		 * if(conditionAdded) { sql += " AND"; conditionAdded = false; } if
+		 * (filters.containsKey("user_id")) { sql += " user_id = ?";
+		 * args.add(filters.get("user_id")); conditionAdded = true; }
+		 */
+		for (String filterKey : filters.keySet()) {
+			if(conditionAdded) { 
+				sql += " AND"; 
+			} 
+			sql += " "+filterKey+" = ? ";
+			 args.add(filters.get(filterKey)); 
+			 conditionAdded = true; 
+		}
+
+System.out.println("SQL------>"+sql);
+System.out.println("args----->"+args);
+		return jdbcTemplate.query(sql,
+				args.toArray(), 
+				new BeanPropertyRowMapper<User>(User.class));
 	}
 }
